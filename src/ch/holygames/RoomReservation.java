@@ -86,7 +86,7 @@ public record RoomReservation(
 
     private OutputRow toOutputRow() {
         return new OutputRow(
-                "'" + reservationId,
+                "" + reservationId,
                 contactReservation.lastName(),
                 contactReservation.firstName(),
                 contactReservation.email(),

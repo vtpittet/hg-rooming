@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 public record InputRow(
     String remark,
+    int reservationIndexOffset,
     String reservationIndex,
     String lastName,
     String firstName,
@@ -20,8 +21,8 @@ public record InputRow(
     String customRoomGroup,
     String roomNeighboring) {
 
-    public static InputRow ofInputLine(String inputLine) {
-        String[] fields = inputLine.split("\t");
+    public static InputRow ofInputLine(InputLine inputLine) {
+        String[] fields = inputLine.line().split("\t");
         String remark = safeGet(fields, 0);
         String reservationIndex = safeGet(fields, 3);
         String lastName = safeGet(fields, 5);
@@ -35,6 +36,7 @@ public record InputRow(
         String roomNeighboring = safeGet(fields, 22);
         return new InputRow(
                 remark,
+                inputLine.offset(),
                 reservationIndex,
                 lastName,
                 firstName,
@@ -46,7 +48,6 @@ public record InputRow(
                 customRoomGroup,
                 roomNeighboring
         );
-
     }
 
     private static String sanitizeHostelRemark(String hostelRemark) {
@@ -54,7 +55,8 @@ public record InputRow(
                 s -> s == null,
                 s -> s.toLowerCase().contains("sparrow"),
                 s -> s.toLowerCase().contains("Je désire être regroupé en chambre et bénéficier d'un prix dégressif"),
-                s -> s.toLowerCase().contains("En chambre à 4 avec Ramoni Florence et Manon")
+                s -> s.toLowerCase().contains("En chambre à 4 avec Ramoni Florence et Manon"),
+                s -> s.toLowerCase().contains("Je désire être regroupé en chambre commune. Merci")
         ).anyMatch(p -> p.test(hostelRemark))) {
             return null;
         } else {
@@ -78,7 +80,7 @@ public record InputRow(
 
     public String computeReservationKey() {
         if (customRoomGroup == null) {
-            return reservationIndex;
+            return reservationIndexOffset + "." + reservationIndex;
         } else {
             return customRoomGroup;
         }

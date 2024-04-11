@@ -19,18 +19,23 @@ public record PeopleReservation(
 ) implements Row
 {
     public static PeopleReservation fromInputRow(int reservationIndex, InputRow inputRow) {
-        return new PeopleReservation(
-                reservationIndex,
-                inputRow.lastName(),
-                inputRow.firstName(),
-                Integer.valueOf(inputRow.age()),
-                inputRow.email(),
-                sanitizeFoodConstraint(inputRow.foodConstraint()),
-                "Monte samedi matin".equals(inputRow.remark()),
-                inputRow.computeIsNewInBatch_2(),
-                inputRow.computeIsCancelledInBatch_1(),
-                inputRow.computeIsCancelledInBatch_2()
-        );
+        try {
+            return new PeopleReservation(
+                    reservationIndex,
+                    inputRow.lastName(),
+                    inputRow.firstName(),
+                    Integer.valueOf(inputRow.age()),
+                    inputRow.email(),
+                    sanitizeFoodConstraint(inputRow.foodConstraint()),
+                    "Monte samedi matin".equals(inputRow.remark()),
+                    inputRow.computeIsNewInBatch_2(),
+                    inputRow.computeIsCancelledInBatch_1(),
+                    inputRow.computeIsCancelledInBatch_2()
+            );
+        } catch (Throwable t) {
+            System.out.println(inputRow);
+            throw t;
+        }
     }
 
     private static String sanitizeFoodConstraint(String input) {
@@ -65,7 +70,7 @@ public record PeopleReservation(
 
     public OutputRow toOutputRow(RoomReservation context) {
         return new OutputRow(
-                "'" + context.reservationId() + "." + reservationIndex,
+                "" + context.reservationId() + "." + reservationIndex,
                 lastName,
                 firstName,
                 email,
@@ -104,11 +109,11 @@ public record PeopleReservation(
     }
 
     public String getArrivalDateString() {
-        return arrivesOnSaturday ? "***18.11.2023***" : "17.11.2023";
+        return arrivesOnSaturday ? "***27.04.2024***" : "26.04.2024";
     }
 
     public String getDepartureDateString() {
-        return "19.11.2023";
+        return "28.04.2024";
     }
 
     public boolean isChild1015() {
