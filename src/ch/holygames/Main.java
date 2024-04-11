@@ -22,6 +22,7 @@ public class Main {
         System.out.println("Hotel-rooming");
 
         ArrayList<List<InputLine>> inputLines = Files.list(Path.of("input"))
+                .sorted(Comparator.comparing(Path::getFileName).reversed())
                 .map(Path::toFile)
                 .map(file -> {
                     try {
@@ -82,7 +83,7 @@ public class Main {
                         Main::combine);
 
         String processedData = roomReservations.stream()
-                .map(RoomReservation::toOutputRows).flatMap(List::stream)
+                .map(RoomReservation::toOutputRows).map(list -> list.get(0))
                 .map(OutputRow::printRow)
                 .collect(Collectors.joining("\n"));
         System.out.println(processedData);

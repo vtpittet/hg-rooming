@@ -5,6 +5,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -84,18 +85,24 @@ public record RoomReservation(
         ).toList();
     }
 
+    private Stream<PeopleReservation> activeAccompagningReservations() {
+        return accompagningReservations().stream().filter(PeopleReservation::isActive);
+    }
+
     private OutputRow toOutputRow() {
         return new OutputRow(
                 "" + reservationId,
-                contactReservation.lastName(),
-                contactReservation.firstName(),
+                aggregateNames(PeopleReservation::lastName),
+                aggregateNames(PeopleReservation::firstName),
                 contactReservation.email(),
                 contactReservation.getArrivalDateString(),
                 contactReservation.getDepartureDateString(),
                 accompagningReservations().stream().filter(PeopleReservation::isAdult).filter(PeopleReservation::isActive).count() + 1,
-                accompagningReservations().stream().filter(PeopleReservation::isChild05).filter(PeopleReservation::isActive).count(),
-                accompagningReservations().stream().filter(PeopleReservation::isChild69).filter(PeopleReservation::isActive).count(),
-                accompagningReservations().stream().filter(PeopleReservation::isChild1015).filter(PeopleReservation::isActive).count(),
+                activeAccompagningReservations().filter(PeopleReservation::isChild).count(),
+                activeAccompagningReservations().filter(PeopleReservation::isChild).map(PeopleReservation::age).map(Object::toString).collect(Collectors.joining(" _ ")),
+                activeAccompagningReservations().filter(PeopleReservation::isChild05).count(),
+                activeAccompagningReservations().filter(PeopleReservation::isChild69).count(),
+                activeAccompagningReservations().filter(PeopleReservation::isChild1015).count(),
                 Stream.concat(
                         hostelRemarks.stream(),
                         contactReservation.foodRequest() != null ?
@@ -108,5 +115,13 @@ public record RoomReservation(
 
     public int getCurrentReservationIndex() {
         return accompagningReservations().size();
+    }
+
+
+    private String aggregateNames(Function<PeopleReservation, String> nameExtractor) {
+        return Stream.concat(Stream.of(contactReservation()), activeAccompagningReservations())
+                .map(nameExtractor)
+                .distinct()
+                .collect(Collectors.joining(" / "));
     }
 }

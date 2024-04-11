@@ -1,5 +1,6 @@
 package ch.holygames;
 
+
 public record OutputRow(
         String reservationId,
         String lastName,
@@ -8,9 +9,12 @@ public record OutputRow(
         String arrivalDate,
         String departureDate,
         long adultCount,
+        long childCount,
+        String childAges,
         long child05Count,
         long child69Count,
         long child1015Count,
+
         String specificRequests
 ) {
     public String printRow() {
@@ -19,13 +23,12 @@ public record OutputRow(
 
         appendOptional(lastName, row);
         appendOptional(firstName, row);
-        appendOptional(email, row);
         appendOptional(arrivalDate, row);
         appendOptional(departureDate, row);
+        appendOptional(null, row);
         appendOptional(adultCount, row);
-        appendOptional(child05Count, row);
-        appendOptional(child69Count, row);
-        appendOptional(child1015Count, row);
+        appendOptional(childCount, row);
+        appendOptional(childAges, row);
         appendOptional(specificRequests, row);
         return row.toString();
     }

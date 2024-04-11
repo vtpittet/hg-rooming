@@ -12,7 +12,7 @@ public record PeopleReservation(
         int age,
         String email,
         String foodRequest,
-        boolean arrivesOnSaturday,
+        boolean specificDates,
         boolean newInBatch2,
         boolean cancelledOnBatch_1,
         boolean cancelledOnBatch_2
@@ -27,7 +27,7 @@ public record PeopleReservation(
                     Integer.valueOf(inputRow.age()),
                     inputRow.email(),
                     sanitizeFoodConstraint(inputRow.foodConstraint()),
-                    "Monte samedi matin".equals(inputRow.remark()),
+                    "26-27".equals(inputRow.remark()),
                     inputRow.computeIsNewInBatch_2(),
                     inputRow.computeIsCancelledInBatch_1(),
                     inputRow.computeIsCancelledInBatch_2()
@@ -77,6 +77,8 @@ public record PeopleReservation(
                 getArrivalDateString(),
                 getDepartureDateString(),
                 isAdult() ?1:0,
+                isChild() ?1:0,
+                isChild() ?"" + age():null,
                 isChild05() ?1:0,
                 isChild69() ?1:0,
                 isChild1015() ?1:0,
@@ -109,11 +111,11 @@ public record PeopleReservation(
     }
 
     public String getArrivalDateString() {
-        return arrivesOnSaturday ? "***27.04.2024***" : "26.04.2024";
+        return "26-04-2024";
     }
 
     public String getDepartureDateString() {
-        return "28.04.2024";
+        return specificDates ? "***27-04-2024***" : "28-04-2024";
     }
 
     public boolean isChild1015() {
@@ -130,6 +132,10 @@ public record PeopleReservation(
 
     public boolean isAdult() {
         return age > 15;
+    }
+
+    public boolean isChild() {
+        return !isAdult();
     }
 
     public boolean isCancelled() {
