@@ -92,8 +92,8 @@ public record RoomReservation(
     private OutputRow toOutputRow() {
         return new OutputRow(
                 "" + reservationId,
-                aggregateNames(PeopleReservation::lastName),
-                aggregateNames(PeopleReservation::firstName),
+                contactReservation().lastName(),
+                contactReservation().firstName(), 
                 contactReservation.email(),
                 contactReservation.getArrivalDateString(),
                 contactReservation.getDepartureDateString(),

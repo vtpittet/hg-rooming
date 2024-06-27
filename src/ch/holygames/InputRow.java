@@ -23,17 +23,17 @@ public record InputRow(
 
     public static InputRow ofInputLine(InputLine inputLine) {
         String[] fields = inputLine.line().split("\t");
-        String remark = safeGet(fields, 0);
-        String reservationIndex = safeGet(fields, 3);
-        String lastName = safeGet(fields, 5);
-        String firstName = safeGet(fields, 6);
-        String foodConstraint = safeGet(fields, 8);
-        String email = safeGet(fields, 9);
-        String babyphone = safeGet(fields, 12);
-        String hostelRemark = safeGet(fields, 16);
-        String age = safeGet(fields, 17);
-        String customRoomGroup = safeGet(fields, 20);
-        String roomNeighboring = safeGet(fields, 22);
+        String remark = safeGet(fields, "A");
+        String reservationIndex = safeGet(fields, "D");
+        String lastName = safeGet(fields, "F");
+        String firstName = safeGet(fields, "G");
+        String foodConstraint = safeGet(fields, "I");
+        String email = safeGet(fields, "J");
+        String babyphone = null;
+        String hostelRemark = safeGet(fields, "O");
+        String age = safeGet(fields, "R");
+        String customRoomGroup = safeGet(fields, "T");
+        String roomNeighboring = safeGet(fields, "V");
         return new InputRow(
                 remark,
                 inputLine.offset(),
@@ -54,6 +54,7 @@ public record InputRow(
         if (Stream.<Predicate<String>>of(
                 s -> s == null,
                 s -> s.toLowerCase().contains("sparrow"),
+                s -> s.toLowerCase().contains("oui"),
                 s -> s.toLowerCase().contains("Je désire être regroupé en chambre et bénéficier d'un prix dégressif"),
                 s -> s.toLowerCase().contains("En chambre à 4 avec Ramoni Florence et Manon"),
                 s -> s.toLowerCase().contains("Je désire être regroupé en chambre commune. Merci")
@@ -64,7 +65,8 @@ public record InputRow(
         }
     }
 
-    private static String safeGet(String[] fromArray, int index) {
+    private static String safeGet(String[] fromArray, String column) {
+        int index = columnToIndex(column);
         if (index < fromArray.length) {
             String string = fromArray[index];
             if ("".equals(string)) {
@@ -77,6 +79,11 @@ public record InputRow(
             return null;
         }
     }
+    private static int columnToIndex(String column) {
+        return column.chars()
+                .reduce(0, (accumulated, added) -> accumulated*26+(added - 'A' + 1))
+                - 1;
+    }
 
     public String computeReservationKey() {
         if (customRoomGroup == null) {
@@ -87,11 +94,11 @@ public record InputRow(
     }
 
     public boolean computeIsCancelled() {
-        return "ANNULÉ".equals(remark);
+        return "annulé".equals(remark);
     }
 
     public boolean computeIsCancelledInBatch_1() {
-        return "ANNULÉ NEW".equals(remark);
+        return "Annulé (new)".equals(remark);
     }
     public boolean computeIsCancelledInBatch_2() {
         return "ANNULÉ NEW2".equals(remark);

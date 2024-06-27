@@ -27,7 +27,7 @@ public record PeopleReservation(
                     Integer.valueOf(inputRow.age()),
                     inputRow.email(),
                     sanitizeFoodConstraint(inputRow.foodConstraint()),
-                    "26-27".equals(inputRow.remark()),
+                    "départ au 27".equals(inputRow.remark()),
                     inputRow.computeIsNewInBatch_2(),
                     inputRow.computeIsCancelledInBatch_1(),
                     inputRow.computeIsCancelledInBatch_2()
@@ -48,6 +48,7 @@ public record PeopleReservation(
                 "aucun",
                 "Aucune",
                 "Aucune",
+                "Aucune allergie",
                 "Non",
                 "",
                 "non",
@@ -111,11 +112,11 @@ public record PeopleReservation(
     }
 
     public String getArrivalDateString() {
-        return "26-04-2024";
+        return "21-07-2024";
     }
 
     public String getDepartureDateString() {
-        return specificDates ? "***27-04-2024***" : "28-04-2024";
+        return specificDates ? "***(si possible) 27-07-2024***" : "26-07-2024";
     }
 
     public boolean isChild1015() {

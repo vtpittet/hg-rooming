@@ -25,7 +25,6 @@ public record OutputRow(
         appendOptional(firstName, row);
         appendOptional(arrivalDate, row);
         appendOptional(departureDate, row);
-        appendOptional(null, row);
         appendOptional(adultCount, row);
         appendOptional(childCount, row);
         appendOptional(childAges, row);
