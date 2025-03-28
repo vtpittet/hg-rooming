@@ -27,13 +27,13 @@ public record InputRow(
         String reservationIndex = safeGet(fields, "D");
         String lastName = safeGet(fields, "F");
         String firstName = safeGet(fields, "G");
-        String foodConstraint = safeGet(fields, "I");
-        String email = safeGet(fields, "J");
-        String babyphone = null;
-        String hostelRemark = safeGet(fields, "O");
-        String age = safeGet(fields, "R");
-        String customRoomGroup = safeGet(fields, "T");
-        String roomNeighboring = safeGet(fields, "V");
+        String foodConstraint = safeGet(fields, "J");
+        String email = safeGet(fields, "K");
+        String babyphone = safeGet(fields, "N");
+        String hostelRemark = safeGet(fields, "Q");
+        String age = safeGet(fields, "T");
+        String customRoomGroup = safeGet(fields, "V");
+        String roomNeighboring = safeGet(fields, "Z");
         return new InputRow(
                 remark,
                 inputLine.offset(),
