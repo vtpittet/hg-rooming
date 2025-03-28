@@ -25,11 +25,17 @@ public record OutputRow(
         appendOptional(firstName, row);
         appendOptional(arrivalDate, row);
         appendOptional(departureDate, row);
+        // room type
+        addEmptyField(row);
         appendOptional(adultCount, row);
         appendOptional(childCount, row);
         appendOptional(childAges, row);
         appendOptional(specificRequests, row);
         return row.toString();
+    }
+
+    private void addEmptyField(StringBuilder stringBuilder) {
+        stringBuilder.append(";");
     }
 
     private void appendOptional(String string, StringBuilder stringBuilder) {

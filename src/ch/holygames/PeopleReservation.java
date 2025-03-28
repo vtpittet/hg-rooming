@@ -113,11 +113,11 @@ public record PeopleReservation(
     }
 
     public String getArrivalDateString() {
-        return "21-07-2024";
+        return "09-05-2025";
     }
 
     public String getDepartureDateString() {
-        return specificDates ? "***(si possible) 27-07-2024***" : "26-07-2024";
+        return specificDates ? "***(si possible) 27-07-2024***" : "11-05-2025";
     }
 
     public boolean isChild1015() {
