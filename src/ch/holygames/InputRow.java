@@ -103,22 +103,29 @@ public record InputRow(
     }
 
     public boolean computeIsCancelled() {
-        return "annulé".equals(remark);
+        return Stream.of(
+                "ANNULATION",
+                "LISTE D'ATTENTE INDIVIDUELLE"
+        ).anyMatch(s -> s.equals(remark));
     }
 
     public boolean computeIsCancelledInBatch_1() {
-        return "Annulé (new)".equals(remark);
+        return Stream.of(
+        ).anyMatch(s -> s.equals(remark));
     }
     public boolean computeIsCancelledInBatch_2() {
-        return "ANNULÉ NEW2".equals(remark);
+        return Stream.of(
+        ).anyMatch(s -> s.equals(remark));
     }
 
     public boolean computeIsNewInBatch_1() {
-        return "NEW".equals(remark);
+        return Stream.of(
+        ).anyMatch(s -> s.equals(remark));
     }
 
     public boolean computeIsNewInBatch_2() {
-        return "NEW2".equals(remark);
+        return Stream.of(
+        ).anyMatch(s -> s.equals(remark));
     }
 
     public String computeNeighborhoodKey(long index) {
