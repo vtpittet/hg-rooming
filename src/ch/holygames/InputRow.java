@@ -51,13 +51,22 @@ public record InputRow(
     }
 
     private static String sanitizeHostelRemark(String hostelRemark) {
-        if (Stream.<Predicate<String>>of(
-                s -> s == null,
-                s -> s.toLowerCase().contains("sparrow"),
-                s -> s.toLowerCase().contains("oui"),
-                s -> s.toLowerCase().contains("Je désire être regroupé en chambre et bénéficier d'un prix dégressif"),
-                s -> s.toLowerCase().contains("En chambre à 4 avec Ramoni Florence et Manon"),
-                s -> s.toLowerCase().contains("Je désire être regroupé en chambre commune. Merci")
+        if (Stream.<Predicate<String>>concat(
+                Stream.of(s -> s == null),
+                Stream.of("Merci pour une chambre double pour nous 2!",
+                                "Nous souhaitons être tous les 5 dans la même chambre.",
+                                "Les chiens sont-ils acceptés à l'hôtel ?",
+                                "Marc-Antoine se joint à notre chambre avec William Bernard et Josselin Moosburgger",
+                                "Je souhaite prendre la formule adulte en chambre quintuple",
+                                "Je souhaite être logée en chambre triple avec mes amies déjà inscrites : Laura Suter et Letitia Frei. Vu et validée avec elles. Merci beaucoup!",
+                                "Chambre individuel",
+                                "Je suis en conversation avec d'autres personnes qui vont a l'évènement pour voir si cest possible de partager la chambre...",
+                                "Nous souhaitons dans la mesure du possible être dans une chambre la moins chère possible, même si cela implique d'être séparés",
+                                "Je souhaite être regroupée en chambre avec mes parents : Stéphan Bratschi",
+                                "no",
+                                "Regroupement avec MASUR LUU Christelle et LUU Jérémie : tous les 4 dans la même chambre, SVP")
+                        .map(String::toLowerCase)
+                        .map(comparison -> s -> s.toLowerCase(Locale.ROOT).contains(comparison))
         ).anyMatch(p -> p.test(hostelRemark))) {
             return null;
         } else {
