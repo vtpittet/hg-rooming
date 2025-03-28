@@ -40,6 +40,7 @@ public record PeopleReservation(
 
     private static String sanitizeFoodConstraint(String input) {
         if (input == null || List.of(
+                "no",
                 "Rien",
                 "N/a",
                 "N/A",
