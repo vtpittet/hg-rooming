@@ -64,9 +64,13 @@ public record InputRow(
                                 "Nous souhaitons dans la mesure du possible être dans une chambre la moins chère possible, même si cela implique d'être séparés",
                                 "Je souhaite être regroupée en chambre avec mes parents : Stéphan Bratschi",
                                 "no",
-                                "Regroupement avec MASUR LUU Christelle et LUU Jérémie : tous les 4 dans la même chambre, SVP")
+                                "Regroupement avec MASUR LUU Christelle et LUU Jérémie : tous les 4 dans la même chambre, SVP",
+                                "Mme Monnier fait famille d'accueil pour les deux enfants qui sont placés en foyer. Elle ne peut pas certifier leur présence à 100%, mais sans retour de notre part par mail, tout est en ordre.",
+                                "Chambre individuelle à 178.-",
+                                "En chambre individuelle",
+                                "Je souhaite être regroupée en chambre avec mes parents : Stéphan Bratschi  Je ne veux pas une chambre pour moi seule.")
                         .map(String::toLowerCase)
-                        .map(comparison -> s -> s.toLowerCase(Locale.ROOT).contains(comparison))
+                        .map(comparison -> s -> s.toLowerCase(Locale.ROOT).equals(comparison))
         ).anyMatch(p -> p.test(hostelRemark))) {
             return null;
         } else {
@@ -81,10 +85,9 @@ public record InputRow(
             if ("".equals(string)) {
                 return null;
             } else {
-                return string;
+                return string.trim();
             }
         } else {
-            System.out.println("index " + index + " is out of bound for array " + Arrays.stream(fromArray).collect(Collectors.joining(",")));
             return null;
         }
     }
